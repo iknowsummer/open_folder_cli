@@ -5,13 +5,14 @@ import jaconv
 # path_dir = r"\\192.168.1.199\product\その他"
 # dir_list = os.listdir(path_dir)
 
-# pyファイルのフォルダを取得
-current_file_path = os.path.abspath(__file__)
-current_dir = os.path.dirname(current_file_path)
-
 # csvファイルを設定
 csv_file_name = "dir_list.csv"
-csv_file_path = os.path.join(current_dir, csv_file_name)
+
+# pyファイルのフォルダを取得
+# current_file_path = os.path.abspath(__file__)
+# current_dir = os.path.dirname(current_file_path)
+# csv_file_path = os.path.join(current_dir, csv_file_name)
+csv_file_path = csv_file_name
 
 path_dirs = [
     r"\\192.168.1.199\product\その他",
