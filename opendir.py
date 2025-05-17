@@ -8,6 +8,10 @@ DIRS_PATH_CSV = "dirs_path.csv"
 # dir_list を all_dirs と filtered_dirs に分けると
 # 引数と関数の整理ができそう
 
+# 起動時にリスト作成に変更
+
+# リスト再作成のコマンド変更 cmd -rとか
+
 def main(files_csv,dirs_path):
 
     while True:
