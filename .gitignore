@@ -1,2 +1,7 @@
 dir_list.csv
 dirs_path.csv
+
+# pyinstaller
+build
+dist
+*spec
