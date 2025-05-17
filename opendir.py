@@ -1,17 +1,9 @@
 import os, csv
 import jaconv
 
-
 # csvファイル
 FILES_CSV = "dir_list.csv"
-
-DIRS_PATH = [
-    r"\\192.168.1.199\product\その他",
-    r"\\192.168.1.199\product\印刷関係",
-    r"\\192.168.1.199\product\個人",
-    r"\\192.168.1.199\web",
-    r"\\192.168.1.199\strage\写真 顧客別"
-]
+DIRS_PATH_CSV = "dirs_path.csv"
 
 # dir_list を all_dirs と filtered_dirs に分けると
 # 引数と関数の整理ができそう
@@ -109,6 +101,15 @@ def openDir(opendir):
     os.startfile(opendir)
     print(opendir,'\n')
 
+def load_dirs_path(csv_path):
+    dirs = []
+    with open(csv_path, encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                dirs.append(line)
+    return dirs
 
 if __name__ == "__main__":
-    main(FILES_CSV,DIRS_PATH)
+    dirs_path = load_dirs_path(DIRS_PATH_CSV)
+    main(FILES_CSV,dirs_path)
