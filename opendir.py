@@ -1,17 +1,11 @@
-import subprocess
-import os, glob, csv
+import os, csv
 import jaconv
 
-# path_dir = r"\\192.168.1.199\product\その他"
-# dir_list = os.listdir(path_dir)
 
 # csvファイルを設定
 csv_file_name = "dir_list.csv"
 
 # pyファイルのフォルダを取得
-# current_file_path = os.path.abspath(__file__)
-# current_dir = os.path.dirname(current_file_path)
-# csv_file_path = os.path.join(current_dir, csv_file_name)
 csv_file_path = csv_file_name
 
 path_dirs = [
@@ -22,6 +16,7 @@ path_dirs = [
     r"\\192.168.1.199\strage\写真 顧客別"
 ]
 
+
 def main():
     while True:
         targets = input('フォルダ顧客名？').split()
@@ -29,7 +24,6 @@ def main():
         #入力が1桁数字なら別対応
         if len(targets[0]) == 1 :
             #入力が0～8なら指定を開く
-            # if targets[0].isdigit():
             if targets[0] in '012345678':
                 pickNo = int(targets[0])
                 opendir = output_dirs[pickNo][1]
@@ -47,16 +41,12 @@ def main():
         #リスト抽出し出力？？？
         printPickList(output_dirs)
 
-        #対象1個なら強制的に開く
+        #対象1個なら開く
         if len(output_dirs) == 1:
             opendir = output_dirs[0][1]
             openDir(opendir)
             break
 
-
-#############################
-#############################
-#############################
 
 def printPickList(dir_fill):
     #対象9個以下ならリスト。それ以上なら羅列
@@ -83,7 +73,6 @@ def read_dir_list():
     return dir_list
 
 
-
 def make_dir_list():
     #対象ディレクトリを全てリスト化
     dir_list = []
@@ -95,6 +84,7 @@ def make_dir_list():
     with open(csv_file_path, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerows(dir_list)
+
 
 def getTargets(targets):
 
@@ -119,8 +109,9 @@ def getTargets(targets):
 
     return dir_out
 
+
 def openDir(opendir):
-    subprocess.Popen(['explorer',opendir],shell=True)
+    os.startfile(opendir)
     print(opendir,'\n')
 
 
