@@ -8,27 +8,25 @@ DIRS_PATH_CSV = "dirs_path.csv"
 # dir_list を all_dirs と filtered_dirs に分けると
 # 引数と関数の整理ができそう
 
-# 起動時にリスト作成に変更
-
-# リスト再作成のコマンド変更 cmd -rとか
-
 def main(files_csv,dirs_path):
+    dir_list = make_dirs_csv(dirs_path,files_csv)
 
     while True:
         targets = input('フォルダ顧客名？').split()
-
+        print(targets)
         #入力が1桁数字ならコマンド実行
         if len(targets[0]) == 1:
             comand_num = targets[0]
-            #入力が0～8なら指定フォルダを開く
-            if comand_num in '012345678':
+            #入力が0～9なら指定フォルダを開く
+            if comand_num in '0123456789':
                 pickNo = int(comand_num)
                 opendir = dir_list[pickNo][1]
                 openDir(opendir)
 
-            #9が入力されたらcsv再作成
-            elif comand_num == '9':
-                print("9が入力されました。リストを再作成します。\n")
+        #refreshコマンド
+        elif targets[0] == 'cmd':
+            if targets[1] == '-r' or targets[1] == 'refresh':
+                print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
         else:
             #ワードごとに対象抜き出し。結果をファイルリストに戻すループ。
@@ -96,7 +94,7 @@ def dir_filter(targets,files_csv):
 
     #対象が無かった場合、csv再作成を促す
     if dir_list == []:
-        print("見つかりませんでした。リストを再作成する場合は「9」を入力してください")
+        print("見つかりませんでした。リストを再作成する場合は「cmd -r（またはrefresh）」を入力してください")
 
     return dir_list
 
