@@ -25,7 +25,7 @@ def main(files_csv,dirs_path):
 
         #refreshコマンド
         elif keywords[0] == 'cmd' and len(keywords) > 1:
-            if keywords[1] == '-r' or keywords[1] == 'refresh':
+            if keywords[1] in ('-r', 'refresh'):
                 print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
                 #全てのディレクトリをリスト化
