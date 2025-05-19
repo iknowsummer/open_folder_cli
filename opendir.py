@@ -5,39 +5,42 @@ import jaconv
 FILES_CSV = "dir_list.csv"
 DIRS_PATH_CSV = "dirs_path.csv"
 
-# dir_list を all_dirs と filtered_dirs に分けると
-# 引数と関数の整理ができそう
-
 def main(files_csv,dirs_path):
-    dir_list = make_dirs_csv(dirs_path,files_csv)
+    all_dirs = make_dirs_csv(dirs_path,files_csv)
+    filtered_dirs = all_dirs
 
     while True:
-        targets = input('フォルダ顧客名？').split()
-        print(targets)
-        #入力が1桁数字ならコマンド実行
-        if len(targets[0]) == 1:
-            comand_num = targets[0]
-            #入力が0～9なら指定フォルダを開く
-            if comand_num in '0123456789':
-                pickNo = int(comand_num)
-                opendir = dir_list[pickNo][1]
-                openDir(opendir)
+        keywords = input('フォルダ顧客名？').split()
+
+        if not keywords:
+            continue
+
+        #入力が1桁数字なら指定フォルダを開く動作
+        if keywords[0].isdigit() and len(keywords[0]) == 1:
+            pickNo = int(keywords[0])
+            if 0 <= pickNo < len(filtered_dirs):
+                openDir(filtered_dirs[pickNo][1])
+            else:
+                print("指定番号が範囲外です\n")
 
         #refreshコマンド
-        elif targets[0] == 'cmd':
-            if targets[1] == '-r' or targets[1] == 'refresh':
+        elif keywords[0] == 'cmd' and len(keywords) > 1:
+            if keywords[1] in ('-r', 'refresh'):
                 print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
+                #全てのディレクトリをリスト化
+                all_dirs = read_dir_list(files_csv)
+                filtered_dirs = all_dirs
         else:
-            #ワードごとに対象抜き出し。結果をファイルリストに戻すループ。
-            dir_list = dir_filter(targets,files_csv)
+            #ワードで対象フォルダをフィルタ
+            filtered_dirs = dir_filter(keywords,files_csv)
 
-            #リスト抽出し出力？？？
-            printPickList(dir_list)
+            #フィルタ結果を出力
+            printPickList(filtered_dirs)
 
             #対象1個なら開く
-            if len(dir_list) == 1:
-                openDir(dir_list[0][1])
+            if len(filtered_dirs) == 1:
+                openDir(filtered_dirs[0][1])
 
 
 def printPickList(dir_fill):
@@ -77,16 +80,16 @@ def make_dirs_csv(dirs_path,files_csv):
         writer.writerows(dir_list)
 
 
-def dir_filter(targets,files_csv):
+def dir_filter(keywords,files_csv):
     dir_list = read_dir_list(files_csv)
 
-    for target in targets:
-        target = jaconv.z2h(target,digit=True,ascii=True, kana=False)
+    for keyword in keywords:
+        keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
 
         #キーワードごとに絞込み
         dir_fill = []
         for dir in dir_list:
-            if target.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
+            if keyword.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
                 dir_fill.append(dir)
 
         #AND検索用に絞込みリストを戻す
