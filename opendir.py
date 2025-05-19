@@ -23,7 +23,7 @@ def main(files_csv,dirs_path):
                     print("指定番号が範囲外です\n")
 
         #refreshコマンド
-        elif targets[0] == 'cmd':
+        elif targets[0] == 'cmd' and len(targets) > 1:
             if targets[1] == '-r' or targets[1] == 'refresh':
                 print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
