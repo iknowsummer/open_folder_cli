@@ -11,15 +11,16 @@ def main(files_csv,dirs_path):
 
     while True:
         targets = input('フォルダ顧客名？').split()
-        print(targets)
         #入力が1桁数字ならコマンド実行
         if len(targets[0]) == 1:
             comand_num = targets[0]
             #入力が0～9なら指定フォルダを開く
             if comand_num in '0123456789':
                 pickNo = int(comand_num)
-                opendir = filtered_dirs[pickNo][1]
-                openDir(opendir)
+                if 0 <= pickNo < len(filtered_dirs):
+                    openDir(filtered_dirs[pickNo][1])
+                else:
+                    print("指定番号が範囲外です\n")
 
         #refreshコマンド
         elif targets[0] == 'cmd':
