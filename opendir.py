@@ -10,10 +10,10 @@ def main(files_csv,dirs_path):
     filtered_dirs = all_dirs
 
     while True:
-        targets = input('フォルダ顧客名？').split()
+        keywords = input('フォルダ顧客名？').split()
         #入力が1桁数字ならコマンド実行
-        if len(targets[0]) == 1:
-            comand_num = targets[0]
+        if len(keywords[0]) == 1:
+            comand_num = keywords[0]
             #入力が0～9なら指定フォルダを開く
             if comand_num in '0123456789':
                 pickNo = int(comand_num)
@@ -23,18 +23,18 @@ def main(files_csv,dirs_path):
                     print("指定番号が範囲外です\n")
 
         #refreshコマンド
-        elif targets[0] == 'cmd' and len(targets) > 1:
-            if targets[1] == '-r' or targets[1] == 'refresh':
+        elif keywords[0] == 'cmd' and len(keywords) > 1:
+            if keywords[1] == '-r' or keywords[1] == 'refresh':
                 print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
                 #全てのディレクトリをリスト化
                 all_dirs = read_dir_list(files_csv)
                 filtered_dirs = all_dirs
         else:
-            #ワードごとに対象抜き出し。結果をファイルリストに戻すループ。
-            filtered_dirs = dir_filter(targets,files_csv)
+            #ワードで対象フォルダをフィルタ
+            filtered_dirs = dir_filter(keywords,files_csv)
 
-            #リスト抽出し出力？？？
+            #フィルタ結果を出力
             printPickList(filtered_dirs)
 
             #対象1個なら開く
@@ -79,16 +79,16 @@ def make_dirs_csv(dirs_path,files_csv):
         writer.writerows(dir_list)
 
 
-def dir_filter(targets,files_csv):
+def dir_filter(keywords,files_csv):
     dir_list = read_dir_list(files_csv)
 
-    for target in targets:
-        target = jaconv.z2h(target,digit=True,ascii=True, kana=False)
+    for keyword in keywords:
+        keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
 
         #キーワードごとに絞込み
         dir_fill = []
         for dir in dir_list:
-            if target.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
+            if keyword.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
                 dir_fill.append(dir)
 
         #AND検索用に絞込みリストを戻す
