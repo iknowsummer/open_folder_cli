@@ -15,16 +15,13 @@ def main(files_csv,dirs_path):
         if not keywords:
             continue
 
-        #入力が1桁数字ならコマンド実行
-        if len(keywords[0]) == 1:
-            comand_num = keywords[0]
-            #入力が0～9なら指定フォルダを開く
-            if comand_num in '0123456789':
-                pickNo = int(comand_num)
-                if 0 <= pickNo < len(filtered_dirs):
-                    openDir(filtered_dirs[pickNo][1])
-                else:
-                    print("指定番号が範囲外です\n")
+        #入力が1桁数字なら指定フォルダを開く動作
+        if keywords[0].isdigit() and len(keywords[0]) == 1:
+            pickNo = int(keywords[0])
+            if 0 <= pickNo < len(filtered_dirs):
+                openDir(filtered_dirs[pickNo][1])
+            else:
+                print("指定番号が範囲外です\n")
 
         #refreshコマンド
         elif keywords[0] == 'cmd' and len(keywords) > 1:
