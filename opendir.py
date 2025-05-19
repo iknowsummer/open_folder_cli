@@ -11,6 +11,10 @@ def main(files_csv,dirs_path):
 
     while True:
         keywords = input('フォルダ顧客名？').split()
+
+        if not keywords:
+            continue
+
         #入力が1桁数字ならコマンド実行
         if len(keywords[0]) == 1:
             comand_num = keywords[0]
