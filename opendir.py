@@ -27,6 +27,9 @@ def main(files_csv,dirs_path):
             if targets[1] == '-r' or targets[1] == 'refresh':
                 print("コマンドrefresh。リストを再作成します。\n")
                 make_dirs_csv(dirs_path,files_csv)
+                #全てのディレクトリをリスト化
+                all_dirs = read_dir_list(files_csv)
+                filtered_dirs = all_dirs
         else:
             #ワードごとに対象抜き出し。結果をファイルリストに戻すループ。
             filtered_dirs = dir_filter(targets,files_csv)
