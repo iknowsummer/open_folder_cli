@@ -5,11 +5,9 @@ import jaconv
 FILES_CSV = "dir_list.csv"
 DIRS_PATH_CSV = "dirs_path.csv"
 
-# dir_list を all_dirs と filtered_dirs に分けると
-# 引数と関数の整理ができそう
-
 def main(files_csv,dirs_path):
-    dir_list = make_dirs_csv(dirs_path,files_csv)
+    all_dirs = make_dirs_csv(dirs_path,files_csv)
+    filtered_dirs = all_dirs
 
     while True:
         targets = input('フォルダ顧客名？').split()
@@ -20,7 +18,7 @@ def main(files_csv,dirs_path):
             #入力が0～9なら指定フォルダを開く
             if comand_num in '0123456789':
                 pickNo = int(comand_num)
-                opendir = dir_list[pickNo][1]
+                opendir = filtered_dirs[pickNo][1]
                 openDir(opendir)
 
         #refreshコマンド
@@ -30,14 +28,14 @@ def main(files_csv,dirs_path):
                 make_dirs_csv(dirs_path,files_csv)
         else:
             #ワードごとに対象抜き出し。結果をファイルリストに戻すループ。
-            dir_list = dir_filter(targets,files_csv)
+            filtered_dirs = dir_filter(targets,files_csv)
 
             #リスト抽出し出力？？？
-            printPickList(dir_list)
+            printPickList(filtered_dirs)
 
             #対象1個なら開く
-            if len(dir_list) == 1:
-                openDir(dir_list[0][1])
+            if len(filtered_dirs) == 1:
+                openDir(filtered_dirs[0][1])
 
 
 def printPickList(dir_fill):
