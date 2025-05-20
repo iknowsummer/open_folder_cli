@@ -83,25 +83,22 @@ def make_dirs_csv(dirs_path,files_csv):
 
 def dir_filter(keywords,all_dirs):
 
-    dir_list = all_dirs
+    filtered_dirs = all_dirs
 
     for keyword in keywords:
         keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
 
         #キーワードごとに絞込み
-        dir_fill = []
-        for dir in dir_list:
-            if keyword.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
-                dir_fill.append(dir)
-
-        #AND検索用に絞込みリストを戻す
-        dir_list = [item for item in dir_fill]
+        filtered_dirs = [
+            dir for dir in filtered_dirs
+            if keyword.lower() in dir[0].lower() ##小文字に変換して比較（表記ゆれ対策）
+        ]
 
     #対象が無かった場合、csv再作成を促す
-    if dir_list == []:
+    if not filtered_dirs:
         print("見つかりませんでした。リストを再作成する場合は「cmd -r（またはrefresh）」を入力してください")
 
-    return dir_list
+    return filtered_dirs
 
 
 def openDir(opendir):
