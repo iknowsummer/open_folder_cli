@@ -37,21 +37,26 @@ def main(files_csv,dirs_path):
             filtered_dirs = dir_filter(keywords,all_dirs)
 
             #フィルタ結果を出力
-            printPickList(filtered_dirs)
+            print_folders(filtered_dirs)
 
             #対象1個なら開く
             if len(filtered_dirs) == 1:
                 openDir(filtered_dirs[0][1])
 
 
-def printPickList(dir_fill):
+def print_folders(folders):
+    """
+    フォルダリストを出力する関数
+    フォルダ数が10個まで番号を付与して出力（選択用）
+    それ以上なら番号なしを1行で出力
+    """
     print('')
-    if len(dir_fill) < 9:
-        for i,dir in enumerate(dir_fill):
-            print(i,dir[0],'【' + dir[1].split('\\')[-2] + '】')
+    if len(folders) <= 10:
+        for i,folder in enumerate(folders):
+            print(i,folder[0],'【' + folder[1].split('\\')[-2] + '】')
     else:
-        for dir in dir_fill:
-            print(dir[0],end=' / ')
+        for folder in folders:
+            print(folder[0],end=' / ')
     print('')
 
 
