@@ -17,7 +17,7 @@ def main(folders_csv,source_paths):
             continue
 
         #入力が1桁数字なら指定フォルダを開く動作
-        if keywords[0].isdigit() and len(keywords[0]) == 1:
+        if keywords[0] in "0123456789":
             pickNo = int(keywords[0])
             if 0 <= pickNo < len(filtered_folders):
                 open_folder(filtered_folders[pickNo])
