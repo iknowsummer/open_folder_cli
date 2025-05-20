@@ -2,13 +2,13 @@ import os, csv
 import jaconv
 
 # csvファイル
-FILES_CSV = "dir_list.csv"
-DIRS_PATH_CSV = "dirs_path.csv"
+FOLDERS_CSV = "folders.csv"
+SOURCE_PATHS_CSV = "source_paths.csv"
 
-def main(files_csv,dirs_path):
-    make_dirs_csv(dirs_path,files_csv)
-    all_dirs = read_dir_list(files_csv)
-    filtered_dirs = all_dirs.copy()
+def main(folders_csv,source_paths):
+    make_folders_csv(source_paths,folders_csv)
+    all_folders = read_folders(folders_csv)
+    filtered_folders = all_folders.copy()
 
     while True:
         keywords = input('フォルダ顧客名？').split()
@@ -19,8 +19,8 @@ def main(files_csv,dirs_path):
         #入力が1桁数字なら指定フォルダを開く動作
         if keywords[0].isdigit() and len(keywords[0]) == 1:
             pickNo = int(keywords[0])
-            if 0 <= pickNo < len(filtered_dirs):
-                openDir(filtered_dirs[pickNo])
+            if 0 <= pickNo < len(filtered_folders):
+                openfolder(filtered_folders[pickNo])
             else:
                 print("指定番号が範囲外です\n")
 
@@ -28,20 +28,20 @@ def main(files_csv,dirs_path):
         elif keywords[0] == 'cmd' and len(keywords) > 1:
             if keywords[1] in ('-r', 'refresh'):
                 print("コマンドrefresh。リストを再作成します。\n")
-                make_dirs_csv(dirs_path,files_csv)
+                make_folders_csv(source_paths,folders_csv)
                 #全てのディレクトリをリスト化
-                all_dirs = read_dir_list(files_csv)
-                filtered_dirs = all_dirs
+                all_folders = read_folders(folders_csv)
+                filtered_folders = all_folders
         else:
             #ワードで対象フォルダをフィルタ
-            filtered_dirs = dir_filter(keywords,all_dirs)
+            filtered_folders = folder_filter(keywords,all_folders)
 
             #フィルタ結果を出力
-            print_folders(filtered_dirs)
+            print_folders(filtered_folders)
 
             #対象1個なら開く
-            if len(filtered_dirs) == 1:
-                openDir(filtered_dirs[0])
+            if len(filtered_folders) == 1:
+                openfolder(filtered_folders[0])
 
 
 def print_folders(folders):
@@ -67,65 +67,69 @@ def print_folders(folders):
     print("")
 
 
-def read_dir_list(files_csv):
-    dir_list = []
-    if os.path.exists(files_csv):
+def read_folders(folders_csv):
+    folders = []
+    if os.path.exists(folders_csv):
         # CSVファイルを開いてデータを読み込む
-        with open(files_csv, 'r', encoding='utf-8') as file:
+        with open(folders_csv, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
-                dir_list.append(row[0])
+                folders.append(row[0])
     else:
         print("リストが見つかりませんでした")
-    return dir_list
+    return folders
 
 
-def make_dirs_csv(dirs_path,files_csv):
-    #対象ディレクトリを全てリスト化
-    dir_list = []
-    for path_dir in dirs_path:
-        for item in os.listdir(path_dir):
-            dir_list.append([os.path.join(path_dir,item)])
+def make_folders_csv(source_paths,folders_csv):
+    """
+    対象ディレクトリ内のフォルダを全てリスト化し
+    csvファイルとして保存する
+    """
+
+    folders = []
+    for path_folder in source_paths:
+        for item in os.listdir(path_folder):
+            folders.append([os.path.join(path_folder,item)])
 
     # csvとして保存
-    with open(files_csv, 'w', newline='', encoding='utf-8') as file:
+    with open(folders_csv, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerows(dir_list)
+        writer.writerows(folders)
 
 
-def dir_filter(keywords,all_dirs):
+def folder_filter(keywords,all_folders):
 
-    filtered_dirs = all_dirs
+    filtered_folders = all_folders
 
     for keyword in keywords:
         keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
 
         #キーワードごとに絞込み
-        filtered_dirs = [
-            dir for dir in filtered_dirs
-            if keyword.lower() in dir.lower() ##小文字に変換して比較（表記ゆれ対策）
+        filtered_folders = [
+            folder for folder in filtered_folders
+            if keyword.lower() in folder.lower() ##小文字に変換して比較（表記ゆれ対策）
         ]
 
     #対象が無かった場合、csv再作成を促す
-    if not filtered_dirs:
+    if not filtered_folders:
         print("見つかりませんでした。リストを再作成する場合は「cmd -r（またはrefresh）」を入力してください")
 
-    return filtered_dirs
+    return filtered_folders
 
 
-def openDir(opendir):
-    os.startfile(opendir)
-    print(opendir,'\n')
+def openfolder(openfolder):
+    os.startfile(openfolder)
+    print(openfolder,'\n')
 
-def load_dirs_path(csv_path):
-    dirs = []
+def load_source_paths(csv_path):
+    folders = []
     with open(csv_path, encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line:
-                dirs.append(line)
-    return dirs
+                folders.append(line)
+    return folders
 
 if __name__ == "__main__":
-    dirs_path = load_dirs_path(DIRS_PATH_CSV)
-    main(FILES_CSV,dirs_path)
+    source_paths = load_source_paths(SOURCE_PATHS_CSV)
+    main(FOLDERS_CSV,source_paths)
