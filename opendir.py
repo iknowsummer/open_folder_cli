@@ -6,8 +6,9 @@ FILES_CSV = "dir_list.csv"
 DIRS_PATH_CSV = "dirs_path.csv"
 
 def main(files_csv,dirs_path):
-    all_dirs = make_dirs_csv(dirs_path,files_csv)
-    filtered_dirs = all_dirs
+    make_dirs_csv(dirs_path,files_csv)
+    all_dirs = read_dir_list(files_csv)
+    filtered_dirs = all_dirs.copy()
 
     while True:
         keywords = input('フォルダ顧客名？').split()
@@ -33,7 +34,7 @@ def main(files_csv,dirs_path):
                 filtered_dirs = all_dirs
         else:
             #ワードで対象フォルダをフィルタ
-            filtered_dirs = dir_filter(keywords,files_csv)
+            filtered_dirs = dir_filter(keywords,all_dirs)
 
             #フィルタ結果を出力
             printPickList(filtered_dirs)
@@ -80,26 +81,24 @@ def make_dirs_csv(dirs_path,files_csv):
         writer.writerows(dir_list)
 
 
-def dir_filter(keywords,files_csv):
-    dir_list = read_dir_list(files_csv)
+def dir_filter(keywords,all_dirs):
+
+    filtered_dirs = all_dirs
 
     for keyword in keywords:
         keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
 
         #キーワードごとに絞込み
-        dir_fill = []
-        for dir in dir_list:
-            if keyword.lower() in dir[0].lower(): ##小文字に変換して比較（表記ゆれ対策）
-                dir_fill.append(dir)
-
-        #AND検索用に絞込みリストを戻す
-        dir_list = [item for item in dir_fill]
+        filtered_dirs = [
+            dir for dir in filtered_dirs
+            if keyword.lower() in dir[0].lower() ##小文字に変換して比較（表記ゆれ対策）
+        ]
 
     #対象が無かった場合、csv再作成を促す
-    if dir_list == []:
+    if not filtered_dirs:
         print("見つかりませんでした。リストを再作成する場合は「cmd -r（またはrefresh）」を入力してください")
 
-    return dir_list
+    return filtered_dirs
 
 
 def openDir(opendir):
