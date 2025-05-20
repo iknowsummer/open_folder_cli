@@ -53,11 +53,16 @@ def print_folders(folders):
     print('')
     if len(folders) <= 10:
         for i,folder in enumerate(folders):
-            print(i,folder[0],'【' + folder[1].split('\\')[-2] + '】')
+            folder_name = os.path.basename(folder[1])
+            folder_parent = os.path.basename(os.path.dirname(folder[1]))
+            print(f"{i} {folder_name}【{folder_parent}】")
     else:
         for folder in folders:
-            print(folder[0],end=' / ')
-    print('')
+            folder_name = os.path.basename(folder[1])
+            print(folder_name,end=' / ')
+
+        print("\n")
+    print("")
 
 
 def read_dir_list(files_csv):
