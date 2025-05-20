@@ -8,7 +8,7 @@ DIRS_PATH_CSV = "dirs_path.csv"
 def main(files_csv,dirs_path):
     make_dirs_csv(dirs_path,files_csv)
     all_dirs = read_dir_list(files_csv)
-    filtered_dirs = all_dirs
+    filtered_dirs = all_dirs.copy()
 
     while True:
         keywords = input('フォルダ顧客名？').split()
@@ -34,7 +34,7 @@ def main(files_csv,dirs_path):
                 filtered_dirs = all_dirs
         else:
             #ワードで対象フォルダをフィルタ
-            filtered_dirs = dir_filter(keywords,files_csv)
+            filtered_dirs = dir_filter(keywords,all_dirs)
 
             #フィルタ結果を出力
             printPickList(filtered_dirs)
@@ -81,8 +81,9 @@ def make_dirs_csv(dirs_path,files_csv):
         writer.writerows(dir_list)
 
 
-def dir_filter(keywords,files_csv):
-    dir_list = read_dir_list(files_csv)
+def dir_filter(keywords,all_dirs):
+
+    dir_list = all_dirs
 
     for keyword in keywords:
         keyword = jaconv.z2h(keyword,digit=True,ascii=True, kana=False)
