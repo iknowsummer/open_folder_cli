@@ -20,7 +20,7 @@ def main(folders_csv,source_paths):
         if keywords[0].isdigit() and len(keywords[0]) == 1:
             pickNo = int(keywords[0])
             if 0 <= pickNo < len(filtered_folders):
-                openfolder(filtered_folders[pickNo])
+                open_folder(filtered_folders[pickNo])
             else:
                 print("指定番号が範囲外です\n")
 
@@ -41,7 +41,7 @@ def main(folders_csv,source_paths):
 
             #対象1個なら開く
             if len(filtered_folders) == 1:
-                openfolder(filtered_folders[0])
+                open_folder(filtered_folders[0])
 
 
 def print_folders(folders):
@@ -117,9 +117,12 @@ def folder_filter(keywords,all_folders):
     return filtered_folders
 
 
-def openfolder(openfolder):
-    os.startfile(openfolder)
-    print(openfolder,'\n')
+def open_folder(folder):
+    """
+    指定されたフォルダを開く
+    """
+    print('\n',f"open: {folder}",'\n')
+    os.startfile(folder)
 
 def load_source_paths(csv_path):
     folders = []
