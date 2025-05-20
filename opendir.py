@@ -62,6 +62,8 @@ def print_folders(folders):
             print(folder_name,end=' / ')
 
         print("\n")
+        print(f"{len(folders)}件のフォルダが見つかりました。")
+        print("選択不可のため10個以下になるよう絞込んでください")
     print("")
 
 
