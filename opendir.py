@@ -126,13 +126,13 @@ def open_folder(folder):
     os.startfile(folder)
 
 def load_source_paths(csv_path):
-    folders = []
+    source_paths = []
     with open(csv_path, encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line:
-                folders.append(line)
-    return folders
+                source_paths.append(line)
+    return source_paths
 
 if __name__ == "__main__":
     source_paths = load_source_paths(SOURCE_PATHS_CSV)
