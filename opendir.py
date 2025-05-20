@@ -37,22 +37,34 @@ def main(files_csv,dirs_path):
             filtered_dirs = dir_filter(keywords,all_dirs)
 
             #フィルタ結果を出力
-            printPickList(filtered_dirs)
+            print_folders(filtered_dirs)
 
             #対象1個なら開く
             if len(filtered_dirs) == 1:
                 openDir(filtered_dirs[0][1])
 
 
-def printPickList(dir_fill):
+def print_folders(folders):
+    """
+    フォルダリストを出力する関数
+    フォルダ数が10個まで番号を付与して出力（選択用）
+    それ以上なら番号なしを1行で出力
+    """
     print('')
-    if len(dir_fill) < 9:
-        for i,dir in enumerate(dir_fill):
-            print(i,dir[0],'【' + dir[1].split('\\')[-2] + '】')
+    if len(folders) <= 10:
+        for i,folder in enumerate(folders):
+            folder_name = os.path.basename(folder[1])
+            folder_parent = os.path.basename(os.path.dirname(folder[1]))
+            print(f"{i} {folder_name}【{folder_parent}】")
     else:
-        for dir in dir_fill:
-            print(dir[0],end=' / ')
-    print('')
+        for folder in folders:
+            folder_name = os.path.basename(folder[1])
+            print(folder_name,end=' / ')
+
+        print("\n")
+        print(f"{len(folders)}件のフォルダが見つかりました。")
+        print("選択不可のため10個以下になるよう絞込んでください")
+    print("")
 
 
 def read_dir_list(files_csv):
