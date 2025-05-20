@@ -6,7 +6,8 @@ FILES_CSV = "dir_list.csv"
 DIRS_PATH_CSV = "dirs_path.csv"
 
 def main(files_csv,dirs_path):
-    all_dirs = make_dirs_csv(dirs_path,files_csv)
+    make_dirs_csv(dirs_path,files_csv)
+    all_dirs = read_dir_list(files_csv)
     filtered_dirs = all_dirs
 
     while True:
