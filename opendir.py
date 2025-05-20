@@ -89,7 +89,8 @@ def make_folders_csv(source_paths,folders_csv):
     folders = []
     for path_folder in source_paths:
         for item in os.listdir(path_folder):
-            folders.append([os.path.join(path_folder,item)])
+            if os.path.isdir(os.path.join(path_folder, item)):
+                folders.append([os.path.join(path_folder,item)])
 
     # csvとして保存
     with open(folders_csv, 'w', newline='', encoding='utf-8') as file:
