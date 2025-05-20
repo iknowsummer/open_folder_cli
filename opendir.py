@@ -20,7 +20,7 @@ def main(files_csv,dirs_path):
         if keywords[0].isdigit() and len(keywords[0]) == 1:
             pickNo = int(keywords[0])
             if 0 <= pickNo < len(filtered_dirs):
-                openDir(filtered_dirs[pickNo][1])
+                openDir(filtered_dirs[pickNo])
             else:
                 print("指定番号が範囲外です\n")
 
@@ -41,7 +41,7 @@ def main(files_csv,dirs_path):
 
             #対象1個なら開く
             if len(filtered_dirs) == 1:
-                openDir(filtered_dirs[0][1])
+                openDir(filtered_dirs[0])
 
 
 def print_folders(folders):
@@ -53,12 +53,12 @@ def print_folders(folders):
     print('')
     if len(folders) <= 10:
         for i,folder in enumerate(folders):
-            folder_name = os.path.basename(folder[1])
-            folder_parent = os.path.basename(os.path.dirname(folder[1]))
+            folder_name = os.path.basename(folder)
+            folder_parent = os.path.basename(os.path.dirname(folder))
             print(f"{i} {folder_name}【{folder_parent}】")
     else:
         for folder in folders:
-            folder_name = os.path.basename(folder[1])
+            folder_name = os.path.basename(folder)
             print(folder_name,end=' / ')
 
         print("\n")
@@ -74,7 +74,7 @@ def read_dir_list(files_csv):
         with open(files_csv, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
-                dir_list.append(row)
+                dir_list.append(row[0])
     else:
         print("リストが見つかりませんでした")
     return dir_list
@@ -85,7 +85,7 @@ def make_dirs_csv(dirs_path,files_csv):
     dir_list = []
     for path_dir in dirs_path:
         for item in os.listdir(path_dir):
-            dir_list.append([item,os.path.join(path_dir,item)])
+            dir_list.append([os.path.join(path_dir,item)])
 
     # csvとして保存
     with open(files_csv, 'w', newline='', encoding='utf-8') as file:
@@ -103,7 +103,7 @@ def dir_filter(keywords,all_dirs):
         #キーワードごとに絞込み
         filtered_dirs = [
             dir for dir in filtered_dirs
-            if keyword.lower() in dir[0].lower() ##小文字に変換して比較（表記ゆれ対策）
+            if keyword.lower() in dir.lower() ##小文字に変換して比較（表記ゆれ対策）
         ]
 
     #対象が無かった場合、csv再作成を促す
