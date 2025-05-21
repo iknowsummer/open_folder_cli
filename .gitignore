@@ -1,5 +1,5 @@
-dir_list.csv
-dirs_path.csv
+folders.csv
+source_paths.csv
 
 # pyinstaller
 build
