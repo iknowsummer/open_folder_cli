@@ -32,6 +32,9 @@ def main(folders_csv,source_paths):
                 #全てのディレクトリをリスト化
                 all_folders = read_folders(folders_csv)
                 filtered_folders = all_folders
+            if keywords[1] in ('exit'):
+                print("終了します。")
+                break
         else:
             #ワードで対象フォルダをフィルタ
             filtered_folders = folder_filter(keywords,all_folders)
