@@ -23,18 +23,9 @@ def main(folders_csv,source_paths):
                 open_folder(filtered_folders[pickNo])
             else:
                 print("指定番号が範囲外です\n")
-
-        #refreshコマンド
         elif keywords[0] == 'cmd' and len(keywords) > 1:
-            if keywords[1] in ('-r', 'refresh'):
-                print("コマンドrefresh。リストを再作成します。\n")
-                make_folders_csv(source_paths,folders_csv)
-                #全てのディレクトリをリスト化
-                all_folders = read_folders(folders_csv)
-                filtered_folders = all_folders
-            if keywords[1] in ('exit'):
-                print("終了します。")
-                break
+            execution_commands(keywords[1],folders_csv)
+        #ワードで対象フォルダをフィルタ
         else:
             #ワードで対象フォルダをフィルタ
             filtered_folders = folder_filter(keywords,all_folders)
@@ -46,6 +37,18 @@ def main(folders_csv,source_paths):
             if len(filtered_folders) == 1:
                 open_folder(filtered_folders[0])
 
+def execution_commands(command,folders_csv):
+    """
+    コマンド実行関数
+    cmdの後に続くコマンドを実行する
+    """
+    if command in ('-r', 'refresh'):
+        print("コマンドrefresh。リストを再作成します。\n")
+        make_folders_csv(source_paths,folders_csv)
+
+    if command == 'exit':
+        print("終了します。")
+        exit()
 
 def print_folders(folders):
     """
