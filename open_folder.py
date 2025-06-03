@@ -68,9 +68,12 @@ def print_folders(folders):
             path_parts = folder.split('\\')
 
             folder_name = path_parts[-1]
-            folder_parent = path_parts[-2]
+            folder_parent = path_parts[-2] if len(path_parts) >= 2 else ''
 
-            print(f"{i} {folder_name}【{folder_parent}】")
+            folder_parent_print = f"【{folder_parent}】" if folder_parent else ''
+
+            print(f"{i} {folder_name} {folder_parent_print}")
+
     else:
         for folder in folders:
             folder_name = os.path.basename(folder)
