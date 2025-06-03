@@ -5,3 +5,7 @@ source_paths.csv
 build
 dist
 *spec
+
+# Nuitka
+*.dist
+*.build
