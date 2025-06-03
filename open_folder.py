@@ -65,9 +65,15 @@ def print_folders(folders):
     print('')
     if len(folders) <= 10:
         for i,folder in enumerate(folders):
-            folder_name = os.path.basename(folder)
-            folder_parent = os.path.basename(os.path.dirname(folder))
-            print(f"{i} {folder_name}【{folder_parent}】")
+            path_parts = folder.split('\\')
+
+            folder_name = path_parts[-1]
+            folder_parent = path_parts[-2] if len(path_parts) >= 2 else ''
+
+            folder_parent_print = f"【{folder_parent}】" if folder_parent else ''
+
+            print(f"{i} {folder_name} {folder_parent_print}")
+
     else:
         for folder in folders:
             folder_name = os.path.basename(folder)
